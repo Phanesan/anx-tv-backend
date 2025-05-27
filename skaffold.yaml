@@ -1,0 +1,14 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: anx-tv-backend
+build:
+  artifacts:
+    - image: anxtvbackend
+      context: .
+      docker:
+        dockerfile: Dockerfile.dev
+manifests:
+  kustomize:
+    paths:
+      - k8s

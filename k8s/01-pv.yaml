@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: anx-tv-pv
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 10Gi  # Ajusta al tamaño solicitado por el PVC
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /run/desktop/mnt/host/c/kubernetes-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop  # Reemplaza con el nombre de tu nodo (kubectl get nodes)

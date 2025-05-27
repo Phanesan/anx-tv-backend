@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: prod
+  name: anx-tv-backend
+spec:
+  selector:
+    matchLabels:
+      app: anx-tv-backend
+  template:
+    metadata:
+      labels:
+        app: anx-tv-backend
+    spec:
+      containers:
+      - name: anx-tv-backend
+        imagePullPolicy: Never
+        image: anxtvbackend:latest
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "700m"
+        ports:
+        - containerPort: 3000

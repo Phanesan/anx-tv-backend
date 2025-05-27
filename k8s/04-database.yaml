@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: prod
+  labels:
+    app: mysql
+spec:
+  serviceName: mysql
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.4  # Puedes especificar la versión que necesites
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: 1
+          limits:
+            memory: "1Gi"
+            cpu: 1
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret  # Debes crear este secret previamente
+              key: root-password
+        - name: MYSQL_DATABASE
+          value: "anxtv"  # Opcional: crea una base de datos al iniciar
+        - name: MYSQL_USER
+          value: "admin"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user-password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-persistent-storage
+      namespace: prod
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi  # Ajusta según tus necesidades
+      storageClassName: local-storage  # Especifica si usas un storage class particular
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: prod  # Reemplaza con tu namespace existente
+  labels:
+    app: mysql
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None  # Esto crea un Headless Service para StatefulSet
+  selector:
+    app: mysql
