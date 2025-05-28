@@ -32,9 +32,9 @@ spec:
               name: mysql-secret  # Debes crear este secret previamente
               key: root-password
         - name: MYSQL_DATABASE
-          value: "anxtv"  # Opcional: crea una base de datos al iniciar
+          value: "anxtv_accounts_db"  # Opcional: crea una base de datos al iniciar
         - name: MYSQL_USER
-          value: "admin"
+          value: admin
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:

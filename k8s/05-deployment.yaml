@@ -16,6 +16,20 @@ spec:
       - name: anx-tv-backend
         imagePullPolicy: Never
         image: anxtvbackend:latest
+        env:
+        - name: DB_USERNAME
+          value: root
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user-password
+        - name: DB_DATABASE
+          value: "anxtv_accounts_db"
+        - name: DB_HOST
+          value: "mysql.prod.svc.cluster.local"
+        - name: DB_PORT
+          value: "3306"
         resources:
           requests:
             memory: "512Mi"
