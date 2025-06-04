@@ -30,6 +30,14 @@ spec:
           value: "mysql.prod.svc.cluster.local"
         - name: DB_PORT
           value: "3306"
+        - name: DATABASE_URL
+          value: "mysql://root:secret@mysql.prod.svc.cluster.local:3306/anxtv_accounts_db?charset=utf8mb4&parseTime=True"
+        - name: MINIO_ENDPOINT
+          value: minio
+        - name: MINIO_ACCESS_KEY
+          value: root
+        - name: MINIO_SECRET_KEY
+          value: d124e0ce30
         resources:
           requests:
             memory: "512Mi"

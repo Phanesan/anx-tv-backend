@@ -18,4 +18,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - docker-desktop  # Reemplaza con el nombre de tu nodo (kubectl get nodes)
+          - docker-desktop
