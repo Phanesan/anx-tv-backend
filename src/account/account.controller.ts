@@ -20,8 +20,8 @@ export class AccountController {
     }
 
     @Post()
-    async createAccount(@Body() data: Account): Promise<JsonResponse> {
-        const account = await this.accountService.createAccount(data);
+    async createAccount(@Body() data: any): Promise<JsonResponse> {
+        const account = await this.accountService.createAccount(data, data.username);
 
         const errors = Validate(account);
 

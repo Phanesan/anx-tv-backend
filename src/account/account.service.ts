@@ -15,8 +15,9 @@ export class AccountService {
         return await this.prisma.account.findUnique({ where: { uuid } });
     }
 
-    async createAccount(data: Account): Promise<Account | number[]> {
+    async createAccount(data: any, username: string): Promise<Account | number[]> {
         let errorsCode: number[] = [];
+        let response;
 
         // Validate data exists
         if (!data.email) errorsCode.push(0);
@@ -28,10 +29,26 @@ export class AccountService {
         const existingAccount = await this.prisma.account.findUnique({ where: { email: data.email } });
         if (existingAccount) throw new HttpException('Account already exists', HttpStatus.BAD_REQUEST);
 
-        // Hash password
-        data.password = await bcrypt.hash(data.password, 10);
+        await this.prisma.$transaction(async (prisma) => {
+            // Hash password
+            data.password = await bcrypt.hash(data.password, 10);
+            
+            response = await this.prisma.account.create({
+                data: {
+                    email: data.email,
+                    password: data.password,
+                }
+            })
 
-        return await this.prisma.account.create({ data });
+            // Create profile
+            await this.prisma.profile.create({ data: { 
+                accountUuid: response.uuid,
+                username: username,
+                channel_description: 'Default description',
+            } });
+        })
+
+        return response;
     }
 
     async updateAccount(data: Account, uuid: string): Promise<Account | number[]> {

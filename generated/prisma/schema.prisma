@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  uuid      String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile?
+}
+
+model Profile {
+  id                  Int        @id @default(autoincrement())
+  account             Account    @relation(fields: [accountUuid], references: [uuid])
+  accountUuid         String     @unique
+  username            String     @unique
+  channel_description String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  metadata            Metadata[]
+}
+
+enum State {
+  PUBLIC
+  PRIVATE
+  UPLOADING
+}
+
+model Metadata {
+  id             Int       @id @default(autoincrement())
+  profile        Profile   @relation(fields: [profileId], references: [id])
+  profileId      Int
+  title          String
+  description    String
+  state          State?
+  views          Int       @default(0)
+  publishDate    DateTime?
+  video_path     String?
+  thumbnail_path String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}

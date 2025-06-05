@@ -25,10 +25,10 @@ spec:
     resources:
       requests:
         memory: "512Mi"
-        cpu: 1
+        cpu: "500m"
       limits:
         memory: "1Gi"
-        cpu: 1
+        cpu: "700m"
   volumes:
   - name: localvolume
     hostPath: # MinIO generally recommends using locally-attached volumes
@@ -40,6 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: prod
   name: minio
   labels:
     app: minio
@@ -60,6 +61,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: prod
   name: minio-external
   labels:
     app: minio
@@ -69,6 +71,10 @@ spec:
     - name: webui
       port: 9090
       targetPort: 9090
-      nodePort: 30001  # Solo necesario para NodePort
+      nodePort: 30001
+    - name: api
+      port: 9000
+      targetPort: 9000
+      nodePort: 30002
   selector:
     app: minio

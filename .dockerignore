@@ -11,5 +11,3 @@ docker-compose*
 deploy.sh
 skaffold.yaml
 k8s/
-generated/
-prisma/migrations/

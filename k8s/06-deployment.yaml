@@ -17,6 +17,10 @@ spec:
         imagePullPolicy: Never
         image: anxtvbackend:latest
         env:
+        - name: URL_BASE
+          value: "localhost"
+        - name: PORT_BASE
+          value: "30000"
         - name: DB_USERNAME
           value: root
         - name: DB_PASSWORD
@@ -33,11 +37,13 @@ spec:
         - name: DATABASE_URL
           value: "mysql://root:secret@mysql.prod.svc.cluster.local:3306/anxtv_accounts_db?charset=utf8mb4&parseTime=True"
         - name: MINIO_ENDPOINT
-          value: minio
+          value: "minio.prod.svc.cluster.local"
         - name: MINIO_ACCESS_KEY
           value: root
         - name: MINIO_SECRET_KEY
           value: d124e0ce30
+        - name: MINIO_PORT
+          value: "30002"
         resources:
           requests:
             memory: "512Mi"
