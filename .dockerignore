@@ -9,3 +9,5 @@ npm-debug.log
 Dockerfile*
 docker-compose*
 deploy.sh
+skaffold.yaml
+k8s/

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: prod
+  name: anx-tv-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: anx-tv-backend
+  template:
+    metadata:
+      labels:
+        app: anx-tv-backend
+    spec:
+      containers:
+      - name: anx-tv-backend
+        imagePullPolicy: Never
+        image: anxtvbackend:latest
+        env:
+        - name: URL_BASE
+          value: "localhost"
+        - name: PORT_BASE
+          value: "30000"
+        - name: DB_USERNAME
+          value: root
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: DB_DATABASE
+          value: "anxtv_accounts_db"
+        - name: DB_HOST
+          value: "my-mysql-cluster.prod.svc.cluster.local"
+        - name: DB_PORT
+          value: "3306"
+        - name: DATABASE_URL
+          value: "mysql://root:secret@my-mysql-cluster.prod.svc.cluster.local:6446/anxtv_accounts_db?charset=utf8mb4&parseTime=True"
+        - name: MINIO_ENDPOINT
+          value: "minio-external.prod.svc.cluster.local"
+        - name: MINIO_ACCESS_KEY
+          value: root
+        - name: MINIO_SECRET_KEY
+          value: d124e0ce30
+        - name: MINIO_PORT
+          value: "30002"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "700m"
+        ports:
+        - containerPort: 3000

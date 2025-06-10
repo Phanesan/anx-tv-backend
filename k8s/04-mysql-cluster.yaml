@@ -1,0 +1,13 @@
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: my-mysql-cluster
+  namespace: prod
+spec:
+  secretName: mysql-secret
+  tlsUseSelfSigned: true
+  instances: 3  # 1 master + 2 réplicas
+  router:
+    instances: 1  # Opcional: MySQL Router para conexiones
+  podSpec:
+    imagePullPolicy: IfNotPresent
