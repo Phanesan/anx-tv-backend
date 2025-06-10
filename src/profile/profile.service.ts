@@ -8,4 +8,8 @@ export class ProfileService {
     async getProfiles() {
         return this.prisma.profile.findMany({});
     }
+
+    async getProfile(id: number) {
+        return this.prisma.profile.findUnique({ where: { id } });
+    }
 }

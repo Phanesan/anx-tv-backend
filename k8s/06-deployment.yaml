@@ -4,6 +4,7 @@ metadata:
   namespace: prod
   name: anx-tv-backend
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: anx-tv-backend
@@ -27,17 +28,17 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql-secret
-              key: user-password
+              key: password
         - name: DB_DATABASE
           value: "anxtv_accounts_db"
         - name: DB_HOST
-          value: "mysql.prod.svc.cluster.local"
+          value: "my-mysql-cluster.prod.svc.cluster.local"
         - name: DB_PORT
           value: "3306"
         - name: DATABASE_URL
-          value: "mysql://root:secret@mysql.prod.svc.cluster.local:3306/anxtv_accounts_db?charset=utf8mb4&parseTime=True"
+          value: "mysql://root:secret@my-mysql-cluster.prod.svc.cluster.local:6446/anxtv_accounts_db?charset=utf8mb4&parseTime=True"
         - name: MINIO_ENDPOINT
-          value: "minio.prod.svc.cluster.local"
+          value: "minio-external.prod.svc.cluster.local"
         - name: MINIO_ACCESS_KEY
           value: root
         - name: MINIO_SECRET_KEY

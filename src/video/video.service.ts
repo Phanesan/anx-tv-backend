@@ -44,4 +44,14 @@ export class VideoService {
         const data = await this.prisma.metadata.findMany({ include : { profile: true }});
         return data;
     }
+
+    async getVideo(id: number): Promise<any> {
+        const data = await this.prisma.metadata.findUnique({ where: { id }, include : { profile: true }});
+        return data;
+    }
+
+    async getVideosByProfileId(profileId: number): Promise<any> {
+        const data = await this.prisma.metadata.findMany({ where: { profileId }, include : { profile: true }});
+        return data;
+    }
 }

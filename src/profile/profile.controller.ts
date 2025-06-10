@@ -9,4 +9,9 @@ export class ProfileController {
     async getProfiles() {
         return this.profileService.getProfiles();
     }
+
+    @Get(':id')
+    async getProfile(id: number) {
+        return this.profileService.getProfile(id);
+    }
 }

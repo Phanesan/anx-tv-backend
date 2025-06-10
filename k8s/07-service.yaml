@@ -4,10 +4,11 @@ metadata:
   namespace: prod
   name: anx-tv-backend-service
 spec:
-  type: NodePort
+  type: NodePort  # Expone el servicio en un puerto alto (30000-32767) en cada nodo
   selector:
-    app: anx-tv-backend
+    app: anx-tv-backend  # Debe coincidir con el selector del Deployment
   ports:
-  - port: 3000
-    targetPort: 3000
-    nodePort: 30000
+    - protocol: TCP
+      port: 3000  # Puerto interno del Service
+      targetPort: 3000  # Puerto del contenedor (definido en el Deployment)
+      nodePort: 30000  # (Opcional) Puerto externo en los nodos (rango 30000-32767)

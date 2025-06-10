@@ -34,4 +34,18 @@ export class VideoController {
             data: await this.videoService.getAllVideos(),
         });
     }
+
+    @Get('get-video/:id')
+    async getVideo(@Param('id') id: number) {
+        return JsonResponse('Video', {
+            data: await this.videoService.getVideo(id),
+        });
+    }
+
+    @Get('get-videos-by-profile/:profileId')
+    async getVideosByProfileId(@Param('profileId') profileId: number) {
+        return JsonResponse('Videos by profile', {
+            data: await this.videoService.getVideosByProfileId(profileId),
+        });
+    }
 }
